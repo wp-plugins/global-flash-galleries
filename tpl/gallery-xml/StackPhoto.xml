@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gallery>
+	<settings>
+		<imagesFolder>{imagesFolder}</imagesFolder>
+		<caption color="0x{caption.color}" fontName="{caption.fontName}" />
+		<frameColor>0x{frameColor}</frameColor>
+		<bgImage alpha="{bgImage.alpha}" source="{bgImage.source}" />
+		<image width="{image.width}" height="{image.height}" />
+		<imageScaleMode>{imageScaleMode}</imageScaleMode>
+		<visibleImages>{visibleImages}</visibleImages>
+		<usePhotoNumbers>{usePhotoNumbers}</usePhotoNumbers>
+		<translation back="{translation.back}" gotoLink="{translation.gotoLink}" />
+		<soundEffect>{soundEffect}</soundEffect>
+		<loader>{loader}</loader>
+		<slideshow>{slideshow}</slideshow>
+		<flickr><![CDATA[{flickr}]]></flickr>
+		<picasa user="{picasa.user}" albumID="{picasa.albumID}" />
+	</settings>
+	<items>{items}
+	</items>
+</gallery>
