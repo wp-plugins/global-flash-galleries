@@ -1,0 +1,35 @@
+<form action="{href}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="action" value="saveImage" />
+	<input type="hidden" name="image_id" value="{id}" />
+{TRUE gallery_id}	<input type="hidden" name="gallery_id" value="{gallery_id}" />{/TRUE}
+{TRUE album_id}	<input type="hidden" name="album_id" value="{album_id}" />{/TRUE}
+
+	<table class="properties form-table">
+		<tr class="image-name">
+			<th><label for="name">Name</label></th>
+			<td><input type="text" class="text" id="name" name="image[name]" value="{name}" size="55" /></td>
+		</tr>
+		<tr class="image-title">
+			<th><label for="title">Title</label></th>
+			<td><input type="text" class="text" id="title" name="image[title]" value="{title}" size="55" /></td>
+		</tr>
+		<tr class="image-description">
+			<th><label for="description">Description</label></th>
+			<td><textarea class="text" id="description" name="image[description]" cols="50" rows="3">{description}</textarea></td>
+		</tr>
+		<tr class="submit">
+			<td>
+				<input type="button" class="button" name="cancel" value="&larr; Back" onclick="submit();" />
+			</td>
+			<td>
+				<input type="submit" class="button-primary button" name="OK" value="Save Picture" />
+			</td>
+		</tr>
+	</table>
+
+	<div class="view-image">
+		<img src="{imgURL}/{path}" alt="{title}" title="" />
+	</div>
+	
+	<div class="close"><input type="submit" class="button" value="&larr; Back" /></div>
+</form>
