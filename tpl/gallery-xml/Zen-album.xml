@@ -1,0 +1,3 @@
+
+		<album icon='{icon}' thumbnailsFolder='{thumbnailsFolder}' imagesFolder='{imagesFolder}' description='{description}'>{items}
+		</album>
