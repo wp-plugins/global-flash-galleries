@@ -1,0 +1,7 @@
+
+		<item>
+			<source>{source}</source>
+			<description>{description}</description>{TRUE link}
+			<link>{link}</link>{/TRUE}{TRUE target}
+			<target>{target}</target>{/TRUE}
+		</item>
