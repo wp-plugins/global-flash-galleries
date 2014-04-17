@@ -2,7 +2,7 @@
 Contributors: global-flash-galleries
 Author Homepage: http://flash-gallery.com/
 Donate link: http://flash-gallery.com/order/
-Tags: photo, images, pictures, flash, gallery, slideshow, media, photos, image, post, page, flip, plugin, admin, posts, picture, album, portfolio, presentation, widget
+Tags: plugin, widget, flash, jquery, mobile, responsive, gallery, photo, image, picture, album, slideshow, portfolio, presentation
 Requires at least: 2.9
 Tested up to: 3.9
 Stable tag: 0.14.2
