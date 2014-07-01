@@ -47,9 +47,9 @@ class flgalleryGallery extends flgalleryBaseClass
 
 		if ($this->id)
 		{
-			$filename = "/{$this->id}.xml";
-			$this->xmlFilePath = $plugin->xmlDir.$filename;
-			$this->xmlFileURL = $plugin->xmlURL.$filename;
+			$filename = "{$this->id}.xml";
+			$this->xmlFilePath = "{$plugin->xmlDir}/{$plugin->blogID}/{$filename}";
+			$this->xmlFileURL = "{$plugin->xmlURL}/{$plugin->blogID}/{$filename}";
 		}
 	}
 
@@ -630,7 +630,7 @@ class flgalleryGallery extends flgalleryBaseClass
 			$altContent = '<a class="flgallery-altcontent" href="http://www.adobe.com/go/getflashplayer" rel="nofollow"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
 		}
 
-		$xmlFile = $plugin->url.'/gallery-xml.php?id='.$this->id;
+		$xmlFile = $plugin->url."/gallery-xml.php?id={$this->id}&blog_id={$plugin->blogID}";
 
 		$flash = $func->flash(
 			$plugin->name.'-'.$this->id,	// id
@@ -815,7 +815,7 @@ class flgalleryGallery extends flgalleryBaseClass
 				if ( function_exists('strisplashes') )
 					$xml = strisplashes($xml);
 
-				$this->cacheXML($xml);
+				$this->cacheXml($xml);
 
 				return $xml;
 			}
@@ -882,10 +882,16 @@ class flgalleryGallery extends flgalleryBaseClass
 		return !empty($flgalleryProducts[$s]) && $flgalleryProducts[$s] !== true;
 	}
 
-	function cacheXML($xml)
+	function cacheXml($xml)
 	{
 		if ($this->id)
 		{
+			$xmlDir = dirname($this->xmlFilePath);
+			if ( !file_exists($xmlDir) )
+			{
+				mkdir($xmlDir, 0777, true);
+			}
+
 			if ( $fp = fopen($this->xmlFilePath, 'w') )
 			{
 				$w = fwrite($fp, $xml);

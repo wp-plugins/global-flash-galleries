@@ -301,30 +301,28 @@ class flgalleryFunctions extends flgalleryBaseClass
 		return $out;
 	}
 
-	function randString($length = 8, $chars = '[0-9][a-z][A-Z]')
+	function randString($length = 12, $chars = '[0-9][a-z][A-Z]')
 	{
 		$chars = str_replace('[0-9]', '0123456789', $chars);
 		$chars = str_replace('[a-z]', 'abcdefghijklmnopqrstuvwxyz', $chars);
 		$chars = str_replace('[A-Z]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', $chars);
 		$n_chars = strlen($chars) - 1;
 
-		srand();
-
 		if ( is_array($length) )
 		{
-			$length = rand($length[0], $length[1]);
+			$length = mt_rand($length[0], $length[1]);
 		}
 
 		$string = '';
 		for ($i = 0; $i < $length; $i++)
 		{
-			$string .= $chars[rand(0, $n_chars)];
+			$string .= $chars[mt_rand(0, $n_chars)];
 		}
 
 		return $string;
 	}
 
-	function uniqueFile($format = '%s', $length = 8, $chars = '[a-z][0-9]')
+	function uniqueFile($format = '%s', $length = 12, $chars = '[a-z][0-9]')
 	{
 		do {
 			$path = sprintf( $format, $this->randString($length, $chars) );
