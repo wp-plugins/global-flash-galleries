@@ -5,7 +5,7 @@ Donate link: http://flash-gallery.com/order/
 Tags: plugin, widget, gallery, flash, jquery, mobile, responsive, photo, photos, image, images, picture, pictures, media, album, slideshow, portfolio, presentation, post, posts
 Requires at least: 2.9
 Tested up to: 4.0.1
-Stable tag: 0.14.5
+Stable tag: 0.14.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Please find in the Screenshots section the short descriptions of every gallery.
 
 == Changelog ==
 
-= 0.14.5 =
+= 0.14.6 =
 * Updated galleries
 
 = 0.14.4 =
