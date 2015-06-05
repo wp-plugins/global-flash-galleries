@@ -717,8 +717,8 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $wpdb->update($plugin->dbImages, array('album_id' => $album_id), array('id' => $image_id));
 	}
 
-	/*
-	 *	Upload page
+	/**
+	 * "Add Pictures" page
 	 */
 	function addMediaPage($a)
 	{
@@ -740,9 +740,10 @@ class flgalleryMedia extends flgalleryBaseClass
 			array(
 				'swfupload' =>	'Flash Uploader',
 				'stdupload' =>	'Browser Uploader',
-				'url' =>		'Add from URL',
+				'url' =>		'Add URLs',
 				'archive' =>	'Upload Archive',
-				'directory' =>	'Import from FTP Folder',
+				'directory' =>	'Import from Folder',
+				'wpmedia' =>	'Import from Media Library',
 			),
 			$tab, '&amp;action=addMediaPage'.$objectID
 		);
@@ -764,6 +765,9 @@ class flgalleryMedia extends flgalleryBaseClass
 			case 'directory':
 				$addMediaPage = $media->importFolder($a, false);
 				break;
+			case 'wpmedia':
+				$addMediaPage = $media->importWpMedia($a, false);
+				break;
 			default:
 				$addMediaPage = '';
 		}
@@ -776,18 +780,21 @@ class flgalleryMedia extends flgalleryBaseClass
 		));
 	}
 
-	/*
-	 *	"Flash Uploader" tab
+	/**
+	 * "Flash Uploader" tab
 	 */
 	function swfUploader(&$a, $echo = true)
 	{
 		include FLGALLERY_GLOBALS;
 
+		$upload_id = mt_rand();
+
 		$a['contentURL'] = $plugin->contentURL;
 		$a['pluginURL'] = $plugin->url;
 		$a['jsURL'] = $plugin->jsURL;
 		$a['href'] = $admpage->href;
-		$a['uploadsPath'] = preg_replace('#^'.preg_quote(FLGALLERY_SITE_URL).'/(.*)#', '$1', $plugin->uploadsURL).'/'.mt_rand();
+		$a['uploadsPath'] = preg_replace('#^'.preg_quote(FLGALLERY_SITE_URL).'/(.*)#', '$1', $plugin->uploadsURL).'/'.$upload_id;
+		$a['contentPath'] = preg_replace('#^'.preg_quote(FLGALLERY_CONTENT_URL).'/(.*)#', '$1', $plugin->uploadsURL).'/'.$upload_id;
 		$a['auth_cookie'] = is_ssl() ? $_COOKIE[SECURE_AUTH_COOKIE] : $_COOKIE[AUTH_COOKIE];
 		$a['file_size_limit'] = wp_max_upload_size().'b';
 
@@ -799,8 +806,8 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $out;
 	}
 
-	/*
-	 *	"Browser Uploader" tab
+	/**
+	 * "Browser Uploader" tab
 	 */
 	function browserUploader(&$a, $echo = true)
 	{
@@ -823,8 +830,8 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $out;
 	}
 
-	/*
-	 *	"Add From URLs" tab
+	/**
+	 * "Add URLs" tab
 	 */
 	function addFromURL(&$a, $echo = true)
 	{
@@ -843,8 +850,8 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $out;
 	}
 
-	/*
-	 *	"Upload Archive" tab
+	/**
+	 * "Upload Archive" tab
 	 */
 	function uploadArchive(&$a, $echo = true)
 	{
@@ -863,8 +870,8 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $out;
 	}
 
-	/*
-	 *	"Import from FTP folder" tab
+	/**
+	 * "Import from Folder" tab
 	 */
 	function importFolder(&$a, $echo = true)
 	{
@@ -884,8 +891,28 @@ class flgalleryMedia extends flgalleryBaseClass
 		return $out;
 	}
 
-	/*
-	 *	Add images to albums and galleries
+	/**
+	 * "Import from Media Library" tab
+	 */
+	function importWpMedia(&$a, $echo = true)
+	{
+		include FLGALLERY_GLOBALS;
+		global $startText;
+		$startText = 'Import';
+
+		$a['jsURL'] = $plugin->jsURL;
+		$a['href'] = $admpage->href;
+
+		$out = $tpl->parse('media/add-wpmedia', $a);
+
+		if ($echo)
+			echo $out;
+
+		return $out;
+	}
+
+	/**
+	 * Add images to albums and galleries
 	 */
 	function addMedia($a)
 	{
@@ -915,7 +942,15 @@ class flgalleryMedia extends flgalleryBaseClass
 			{
 				if ( !empty($path) )
 				{
-					$fullPath = $plugin->imgDir.'/'.$path;
+					if (preg_match('#^(/|[a-z]:)#i', $path)) {
+						$fullPath = $path;
+						$path = '/'.preg_replace('/^'.preg_quote(ABSPATH, '/').'/', '', $path);
+					}
+					else {
+						$fullPath = $plugin->imgDir.'/'.$path;
+					}
+
+
 					list($width, $height) = $imageSize = getimagesize($fullPath);
 
 					$insert = $wpdb->insert(
@@ -976,7 +1011,7 @@ class flgalleryMedia extends flgalleryBaseClass
 				$added = array_merge($added, $files);
 		}
 
-		// Add from URLs
+		// Add URLs
 		if ( !empty($_POST['addFromURL_file']) && is_array($_POST['addFromURL_file']) )
 		{
 			$URLs = array();
@@ -1024,7 +1059,7 @@ class flgalleryMedia extends flgalleryBaseClass
 			$importFolder_delete = true;
 		}
 
-		// Import from FTP Folder
+		// Import from Folder
 		if ( !isset($importFolder_path) )
 			$importFolder_path = &$_POST['importFolder_path'];
 
@@ -1052,6 +1087,18 @@ class flgalleryMedia extends flgalleryBaseClass
 			}
 		}
 
+		// Import from Media Library
+		$wpmedia_ids =& $_POST['wpmedia_id'];
+		if ( !empty($wpmedia_ids) && is_array($wpmedia_ids) )
+		{
+			foreach ($wpmedia_ids as $key => $id)
+			{
+				$file = get_attached_file($id);
+				$this->addFile($file, get_the_title($id), '');
+				$added[] = $file;
+			}
+		}
+
 		// Delete temporary directories
 		if ( !empty($tmpDirs) )
 		{
@@ -1073,6 +1120,36 @@ class flgalleryMedia extends flgalleryBaseClass
 			'title' => $title,
 			'description' => $description
 		);
+	}
+
+	function getWpMediaLibraryJson($offset = 0, $limit = 30)
+	{
+		include FLGALLERY_GLOBALS;
+
+		$offset = (int)$offset;
+		$limit = (int)$limit;
+
+		$items = $wpdb->get_results("
+			SELECT ID
+			FROM `{$wpdb->prefix}posts`
+			WHERE `post_author` = 1
+			AND `post_type` = 'attachment'
+			AND `post_mime_type` IN ('image/gif', 'image/jpeg', 'image/png')
+			ORDER BY `post_date` DESC
+			LIMIT {$offset}, {$limit}
+		");
+
+		foreach ($items as $key => $item) {
+			$thumbnail = wp_get_attachment_image_src($item->ID, array(300, 300));
+			$items[$key]->thumbnail = array(
+				'src' => $thumbnail[0],
+				'width' => $thumbnail[1],
+				'height' => $thumbnail[2]
+			);
+		}
+
+		@header("Content-Type: application/json; charset=utf-8");
+		echo json_encode($items);
 	}
 }
 
