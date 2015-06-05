@@ -800,15 +800,15 @@ body.wait * {
 	white-space: nowrap;
 	background: #eee url(../img/button.gif) repeat-x top;
 	margin: 0 0.25em 0 0;
-	padding: 0.75em 1.5em 0.5em;
+	padding: 0.75em 1em 0.5em;
 	border: 1px solid #ccc;
-	-moz-border-radius: 1em 1em 0 0;
-	-webkit-border-top-left-radius: 1em;
-	-khtml-border-top-left-radius: 1em;
-	border-top-left-radius: 1em;
-	-webkit-border-top-right-radius: 1em;
-	-khtml-border-top-right-radius: 1em;
-	border-top-right-radius: 1em;
+	-moz-border-radius: 0.5em 0.5em 0 0;
+	-webkit-border-top-left-radius: 0.5em;
+	-khtml-border-top-left-radius: 0.5em;
+	border-top-left-radius: 0.5em;
+	-webkit-border-top-right-radius: 0.5em;
+	-khtml-border-top-right-radius: 0.5em;
+	border-top-right-radius: 0.5em;
 }
 .flgallery .tab-menu li:hover {
 	background: #f0f0f0 url(../img/button-hover.gif) repeat-x top;
@@ -1185,6 +1185,39 @@ body.wait * {
 }
 .flgallery .addmedia-swfupload #uploadQueue {
 	clear: left;
+}
+.flgallery .addmedia-wpmedia .addmedia-label {
+	margin: 0 0 1em;
+}
+.flgallery #importWpMedia-items {
+	display: block;
+	margin: 0 0 0 -5px;
+	padding: 0;
+}
+.flgallery #importWpMedia-items li {
+	display: block;
+	position: relative;
+	float: left;
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	margin: 0 10px 10px 0;
+	list-style: none;
+	border: 5px solid transparent;
+}
+.flgallery #importWpMedia-items li.selected {
+	border: 5px solid #00a0d2;
+}
+.flgallery #importWpMedia-items li img {
+	display: block;
+	position: absolute;
+}
+.flgallery #importWpMedia-items li input {
+	position: absolute;
+	display: none;
+	left: 5px;
+	top: 5px;
+	margin: 0;
 }
 
 .flgallery #newAlbumForm {
