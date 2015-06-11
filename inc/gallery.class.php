@@ -185,17 +185,23 @@ class flgalleryGallery extends flgalleryBaseClass
 				WHERE `id` = '{$this->id}' AND {$this->auth}
 			");
 			if ($res !== false) {
-				$delImages = $wpdb->query("
-					DELETE FROM `{$plugin->dbImages}`
-					WHERE `gallery_id` = '{$this->id}'
-				");
-
-				$delSettings = $wpdb->query("
+				$wpdb->query("
 					DELETE FROM `{$plugin->dbSettings}`
 					WHERE `gallery_id` = '{$this->id}'
 				");
 
-				return $delImages !== false && $delSettings !== false;
+				$images = $wpdb->get_results("
+					SELECT `id`
+					FROM `{$plugin->dbImages}`
+					WHERE `gallery_id` = '{$this->id}'
+				");
+				if ($images !== false) {
+					foreach ($images as $image) {
+						$media->deleteImage($image->id);
+					}
+				}
+
+				return true;
 			} else {
 				$this->error(sprintf(__('Unable to delete Gallery #%s (DB Error: %s)', $plugin->name), $this->id, $wpdb->last_error));
 				$this->debug("SQL: {$wpdb->last_query}", array('Error', $this->errorN));
@@ -553,10 +559,8 @@ class flgalleryGallery extends flgalleryBaseClass
 			$altContent = '<a class="flgallery-altcontent" href="http://www.adobe.com/go/getflashplayer" rel="nofollow"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>';
 		}
 
-		if (file_exists($this->xmlFilePath)) {
-			$xmlFile = $this->xmlFileURL;
-		} else {
-			$xmlFile = admin_url('admin-ajax.php') . "?action=flgalleryXml&gallery_id={$this->id}&blog_id={$plugin->blogID}";
+		if (!file_exists($this->xmlFilePath)) {
+			$this->getXml();
 		}
 
 		$flash = $func->flash(
@@ -565,7 +569,7 @@ class flgalleryGallery extends flgalleryBaseClass
 			$this->width, // dimensions
 			$this->height,
 			array(
-				'flashVars' => 'XMLFile=' . rawurlencode($xmlFile),
+				'flashVars' => 'XMLFile=' . rawurlencode($this->xmlFileURL),
 				'allowFullScreen' => 'true',
 				'allowScriptAccess' => 'always',
 				'quality' => 'high',
@@ -578,7 +582,7 @@ class flgalleryGallery extends flgalleryBaseClass
 
 		$altgallery = $tpl->parse('altgallery', array_merge(get_object_vars($this), array(
 			'pluginURL' => $plugin->url,
-			'xmlFile' => $xmlFile
+			'xmlFile' => $this->xmlFileURL
 		)));
 
 		$style = "width: {$this->width}px; height: {$this->height}px; overflow: hidden;";
