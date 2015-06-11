@@ -18,7 +18,7 @@ class flgalleryStats
 
 	function microtime()
 	{
-		$mtime = explode( ' ', microtime() );
+		$mtime = explode(' ', microtime());
 		return $mtime[1] + $mtime[0];
 	}
 
@@ -53,5 +53,3 @@ class flgalleryStats
 	}
 
 }
-
-?>

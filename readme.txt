@@ -25,6 +25,9 @@ Please find in the Screenshots section the short descriptions of every gallery.
 
 == Changelog ==
 
+= 0.15.2 =
+* Security fixes
+
 = 0.15.1 =
 * Import pictures from WP Media Library
 * Mobile version of 3D Wall gallery
@@ -93,7 +96,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-Copyright 2009-2014 Flash Gallery Team
+Copyright 2009-2015 Flash Gallery Team
 
 == Screenshots ==
 

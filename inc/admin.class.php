@@ -4,34 +4,31 @@ class flgalleryAdmin extends flgalleryBaseClass
 {
 	function init()
 	{
-		require_once FLGALLERY_INCLUDE.'/admin-page.class.php';
+		require_once FLGALLERY_INCLUDE . '/adminPage.class.php';
 		$this->page = new flgalleryAdminPage();
 
-		if (!empty($_REQUEST['page']) && ($_REQUEST['page'] == 'flgallery' || $_REQUEST['page'] == 'flgallery/media'))
-		{
-			add_action( 'admin_init', array(&$this, 'wpInit') );
-			add_action( 'admin_print_scripts', array(&$this, 'scripts') );
+		if (!empty($_REQUEST['page']) && ($_REQUEST['page'] == 'flgallery' || $_REQUEST['page'] == 'flgallery/media')) {
+			add_action('admin_init', array(&$this, 'wpInit'));
+			add_action('admin_print_scripts', array(&$this, 'scripts'));
 		}
 
-		add_action( 'admin_menu', array(&$this, 'menu') );
-		add_action( 'wp_ajax_flgalleryAdmin', array(&$this, 'ajax') );
+		add_action('admin_menu', array(&$this, 'menu'));
+		add_action('wp_ajax_flgalleryAdmin', array(&$this, 'ajax'));
 	}
 
 	function wpInit()
 	{
 		include FLGALLERY_GLOBALS;
 
-		if ( !empty($_REQUEST['orderBy']) || !empty($_REQUEST['order']) )
-		{
-			$cookie = $plugin->userCookie ? unserialize( base64_decode($plugin->userCookie) ) : array();
+		if (!empty($_REQUEST['orderBy']) || !empty($_REQUEST['order'])) {
+			$cookie = $plugin->userCookie ? unserialize(base64_decode($plugin->userCookie)) : array();
 			$cookie['albumsList']['orderBy'] =& $_REQUEST['orderBy'];
 			$cookie['albumsList']['order'] =& $_REQUEST['order'];
-			setcookie( $plugin->userDomain, $plugin->userCookie = base64_encode(serialize($cookie)), time() + 86400*24, '/' );
+			setcookie($plugin->userDomain, $plugin->userCookie = base64_encode(serialize($cookie)), time() + 86400 * 24, '/');
 		}
 
 		$action = empty($_REQUEST['action']) ? '' : $_REQUEST['action'];
-		switch ($action)
-		{
+		switch ($action) {
 			case 'downloadImage':
 				$image_id = (int)$_REQUEST['image_id'];
 
@@ -43,6 +40,7 @@ class flgalleryAdmin extends flgalleryBaseClass
 				break;
 
 			default:
+				break;
 		}
 	}
 
@@ -89,36 +87,34 @@ class flgalleryAdmin extends flgalleryBaseClass
 		include FLGALLERY_GLOBALS;
 
 		$wp_version = get_bloginfo('version');
-		if ( version_compare($wp_version, '3.1', '>=') )	// WordPress 3.1 and newer
-		{
-			wp_enqueue_script('jquery', $plugin->jsDir.'/jquery/jquery.js', array(), '1.10.2');
-			wp_enqueue_script('jquery-ui-core', $plugin->jsDir.'/jquery/ui.core.js', array('jquery'), '1.10.4');
-			wp_enqueue_script('jquery-ui-widget', $plugin->jsDir.'/jquery/ui.widget.js', array('jquery'), '1.10.4');
-			wp_enqueue_script('jquery-ui-mouse', $plugin->jsDir.'/jquery/ui.mouse.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget'), '1.10.4');
-			wp_enqueue_script('jquery-ui-position', $plugin->jsDir.'/jquery/ui.position.js', array('jquery'), '1.10.4');
-			wp_enqueue_script('jquery-ui-dialog', $plugin->jsDir.'/jquery/ui.dialog.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position'), '1.10.4');
-			wp_enqueue_script('jquery-ui-draggable', $plugin->jsDir.'/jquery/ui.draggable.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.10.4');
-			wp_enqueue_script('jquery-ui-resizable', $plugin->jsDir.'/jquery/ui.resizable.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.10.4');
-			wp_enqueue_script('jquery-ui-slider', $plugin->jsDir.'/jquery/ui.slider.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.10.4');
-			wp_enqueue_script('jquery-ui-sortable', $plugin->jsDir.'/jquery/ui.sortable.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-mouse'), '1.10.4');
-			//wp_enqueue_script('jquery-ui-tabs', $plugin->jsDir.'/jquery/ui.tabs.js', array('jquery', 'jquery-ui-core', 'jquery-ui-widget'), '1.10.4');
-		}
-		else	// WordPress 3.0.x and older
-		{
-			wp_enqueue_script('jquery', $plugin->jsDir.'/jquery-legacy/jquery.js', array(), '1.3.2');
-			wp_enqueue_script('jquery-ui-core', $plugin->jsDir.'/jquery-legacy/ui.core.js', array('jquery'), '1.7.3');
-			wp_enqueue_script('jquery-ui-dialog', $plugin->jsDir.'/jquery-legacy/ui.dialog.js', array('jquery', 'jquery-ui-core'), '1.7.3');
-			wp_enqueue_script('jquery-ui-draggable', $plugin->jsDir.'/jquery-legacy/ui.draggable.js', array('jquery', 'jquery-ui-core'), '1.7.3');
-			wp_enqueue_script('jquery-ui-resizable', $plugin->jsDir.'/jquery-legacy/ui.resizable.js', array('jquery', 'jquery-ui-core'), '1.7.3');
-			wp_enqueue_script('jquery-ui-slider', $plugin->jsDir.'/jquery-legacy/ui.slider.js', array('jquery', 'jquery-ui-core'), '1.7.3');
-			wp_enqueue_script('jquery-ui-sortable', $plugin->jsDir.'/jquery-legacy/ui.sortable.js', array('jquery', 'jquery-ui-core'), '1.7.3');
-			//wp_enqueue_script('jquery-ui-tabs', $plugin->jsDir.'/jquery-legacy/ui.tabs.js', array('jquery', 'jquery-ui-core'), '1.7.3');
+		if (version_compare($wp_version, '3.1', '>=')) {
+			// WordPress 3.1 and newer
+			wp_enqueue_script('jquery');
+			wp_enqueue_script('jquery-ui-core');
+			wp_enqueue_script('jquery-ui-widget');
+			wp_enqueue_script('jquery-ui-mouse');
+			wp_enqueue_script('jquery-ui-position');
+			wp_enqueue_script('jquery-ui-dialog');
+			wp_enqueue_script('jquery-ui-draggable');
+			wp_enqueue_script('jquery-ui-resizable');
+			wp_enqueue_script('jquery-ui-slider');
+			wp_enqueue_script('jquery-ui-sortable');
+		} else {
+			// WordPress 3.0.x and older
+			wp_enqueue_script('jquery');
+			wp_enqueue_script('jquery-ui-core');
+			wp_enqueue_script('jquery-ui-dialog');
+			wp_enqueue_script('jquery-ui-draggable');
+			wp_enqueue_script('jquery-ui-resizable');
+			wp_enqueue_script('jquery-ui-slider', $plugin->jsDir . '/ui.slider.js', array('jquery', 'jquery-ui-core'), '1.7.3');
+			wp_enqueue_script('jquery-ui-sortable');
 		}
 
-		wp_enqueue_script($plugin->name.'-farbtastic', $plugin->jsDir.'/farbtastic.js', array('jquery'), '1.2');
-		wp_enqueue_script($plugin->name.'-swfobject', $plugin->jsDir.'/swfobject/swfobject.js', array(), '2.2');
-		//wp_enqueue_script($plugin->name.'-swfupload', $plugin->jsDir.'/swfupload/swfupload.js', array($plugin->name.'-swfobject'), '2.2.0.1');
-		wp_enqueue_script('scrollTo', $plugin->jsDir.'/jquery.scrollTo.js', array('jquery'), '1.4.2');
+		wp_enqueue_script('swfobject');
+		wp_enqueue_script('swfupload');
+		wp_enqueue_script('swfupload-queue');
+		wp_enqueue_script('jquery-scrollTo', $plugin->jsDir . '/jquery.scrollTo.js', array('jquery'), '1.4.2');
+		wp_enqueue_script($plugin->name . '-farbtastic', $plugin->jsDir . '/farbtastic.js', array('jquery'), '1.2');
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $plugin->url; ?>/css/jquery/jquery-ui.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $plugin->url; ?>/css/farbtastic/farbtastic.css" />
@@ -132,33 +128,31 @@ class flgalleryAdmin extends flgalleryBaseClass
 
 		$action = empty($_REQUEST['action']) ? NULL : $_REQUEST['action'];
 
-		if ( !empty($_REQUEST['gallery_id']) )	// Gallery actions
+		if (!empty($_REQUEST['gallery_id'])) // Gallery actions
 		{
 			$gallery_id = (int)$_REQUEST['gallery_id'];
 			$gallery = new flgalleryGallery($gallery_id);
-			if ($gallery->id == $gallery_id)
-			{
+			if ($gallery->id == $gallery_id) {
 				$admin->galleryAction($gallery, $action);
+			} else {
+				echo '<h1>' . __('Access Denied.') . '</h1>';
 			}
-			else
-			{
-				echo '<h1>'. __('Access Denied.') .'</h1>';
-			}
-		}
-		else
-		{
-			switch ($action)
-			{
+		} else {
+			switch ($action) {
 				case 'addNewGallery':
 					$admpage->head('Create', 'new-gallery');
 					$admpage->newGallery();
 					break;
 
 				case 'createGallery':
-					if ( !empty($_REQUEST['OK']) )
-					{
-						if ( $admin->createGallery($_REQUEST['gallery']) )
+					if (!empty($_POST['OK'])) {
+						$data = array(
+							'name' => sanitize_text_field(stripslashes($_POST['gallery']['name'])),
+							'type' => sanitize_text_field(stripslashes($_POST['gallery']['type']))
+						);
+						if ($admin->createGallery($data)) {
 							$func->locationReset();
+						}
 					}
 					$admpage->manageGalleries();
 					break;
@@ -175,8 +169,7 @@ class flgalleryAdmin extends flgalleryBaseClass
 	{
 		include FLGALLERY_GLOBALS;
 
-		switch ($action)
-		{
+		switch ($action) {
 			case 'arrangeGallery':
 				$gallery->arrange($_POST['order']);
 				$admpage->manageGalleries();
@@ -188,61 +181,57 @@ class flgalleryAdmin extends flgalleryBaseClass
 				break;
 
 			case 'changeGalleryOptions':
-				if ( !empty($_POST['OK']) || !empty($_POST['update']) || !empty($_POST['exportXML']) )
-				{
+				if (!empty($_POST['OK']) || !empty($_POST['update']) || !empty($_POST['exportXML'])) {
 					$gallery_type = $gallery->type;
 					$typeChanged = false;
 
-					if ( !empty($_POST['gallery']) )
-					{
-						foreach ($_POST['gallery'] as $key => $value)
-						{
-							if ( isset($gallery->$key) )
-								$gallery->$key = $value;
-						}
+					if (!empty($_POST['gallery'])) {
+						$gallery->name = sanitize_text_field(stripslashes($_POST['gallery']['name']));
+						$gallery->type = sanitize_text_field(stripslashes($_POST['gallery']['type']));
+						$gallery->width = (int)$_POST['gallery']['width'];
+						$gallery->height = (int)$_POST['gallery']['height'];
+
 						$gallery->save();
-						if ( $_POST['gallery']['type'] != $gallery_type )
+
+						if ($gallery->type != $gallery_type) {
 							$typeChanged = true;
+						}
 					}
 
-					if ( !empty($_POST['settings']) && !$typeChanged )
-					{
+					if (!empty($_POST['settings']) && !$typeChanged) {
 						$gallery->getSettings();
-						foreach ($gallery->settingsInfo as $key => $param)
-						{
-							if ( isset($_POST['settings'][$key]) )
-								$gallery->settings[$key] = trim($_POST['settings'][$key]);
-							else
-							{
+
+						foreach ($gallery->settingsInfo as $key => $param) {
+							if (isset($_POST['settings'][$key])) {
+								$gallery->settings[$key] = sanitize_text_field(stripslashes($_POST['settings'][$key]));
+							} else {
 								$paramInputAtt = $param->input->attributes();
-								if ( (string)$paramInputAtt->type == 'checkbox' )
-								{
-									$values = explode( '|', (string)$paramInputAtt->value );
+								if ((string)$paramInputAtt->type == 'checkbox') {
+									$values = explode('|', (string)$paramInputAtt->value);
 									$gallery->settings[$key] = trim($values[1]);
 								}
 							}
 						}
+
 						$gallery->saveSettings();
 					}
 
-					if ( !empty($_POST['update']) )
-					{
+					if (!empty($_POST['update'])) {
 						$admpage->head('Gallery Options', 'gallery-options');
 						$func->locationReset("&action=galleryOptions&gallery_id={$gallery->id}");
 						$admpage->galleryOptions($gallery);
 						break;
 					}
 
-					if ( !empty($_POST['exportXML']) )
-					{
+					if (!empty($_POST['exportXML'])) {
 						$admpage->manageGalleries();
-						$func->redirect($plugin->url."/gallery-xml.php?id={$gallery->id}&blog_id={$plugin->blogID}&download");
+						$xmlUrl = admin_url('admin-ajax.php') . "?action=flgalleryXml&gallery_id={$gallery->id}&blog_id={$plugin->blogID}&download";
+						$func->redirect($xmlUrl);
 						break;
 					}
 				}
 
-				if ( !empty($_POST['resetOptions']) )
-				{
+				if (!empty($_POST['resetOptions'])) {
 					$gallery->resetSettings();
 
 					$admpage->head('Gallery Options', 'gallery-options');
@@ -268,12 +257,19 @@ class flgalleryAdmin extends flgalleryBaseClass
 				break;
 
 			case 'saveImage':
-				if ( !empty($_POST['OK']) && !empty($_POST['image']) )
-				{
+				if (!empty($_POST['OK']) && !empty($_POST['image'])) {
 					$image_id = (int)$_POST['image_id'];
 					$applyToCopies = !empty($_POST['applyToCopies']);
-					if ( $media->saveImage($image_id, $_POST['image'], $applyToCopies) )
+					$data = array(
+						'name' => sanitize_file_name(stripslashes($_POST['image']['name'])),
+						'title' => sanitize_text_field(stripslashes($_POST['image']['title'])),
+						'description' => sanitize_text_field(stripslashes($_POST['image']['description'])),
+						'link' => sanitize_text_field(stripslashes($_POST['image']['link'])),
+						'target' => sanitize_text_field(stripslashes($_POST['image']['target']))
+					);
+					if ($media->saveImage($image_id, $data, $applyToCopies)) {
 						$gallery->save();
+					}
 				}
 				$func->locationReset("&gallery_id={$gallery->id}&imgs=1#gallery-{$gallery->id}");
 				$admpage->manageGalleries();
@@ -302,26 +298,22 @@ class flgalleryAdmin extends flgalleryBaseClass
 				break;
 
 			case 'uploadPage':
-				$media->uploadPage( array('gallery_id' => $gallery->id) );
+				$media->uploadPage(array('gallery_id' => $gallery->id));
 				break;
 
 			case 'upload':
-				if ( !empty($_POST['OK']) )
-				{
-					$media->uploadPictures( array('gallery_id' => $gallery->id) );
+				if (!empty($_POST['OK'])) {
+					$media->uploadPictures(array('gallery_id' => $gallery->id));
 					$func->locationReset("&gallery_id={$gallery->id}&imgs=1#gallery-{$gallery->id}");
 					$admpage->manageGalleries();
-				}
-				else
-				{
+				} else {
 					$func->locationReset("&gallery_id={$gallery->id}&imgs=1#gallery-{$gallery->id}");
 					$admpage->manageGalleries();
 				}
 				break;
 
 			case 'addImages':
-				switch ( $_POST['order'] )
-				{
+				switch ($_POST['order']) {
 					case 'before':
 						$order = (int)$wpdb->get_var("
 							SELECT MIN(`order`)
@@ -342,10 +334,9 @@ class flgalleryAdmin extends flgalleryBaseClass
 						break;
 				}
 
-				foreach ( $_POST['images'] as $image_id )
-				{
+				foreach ($_POST['images'] as $image_id) {
 					$order += $orderInc;
-					$media->copyImage( $image_id, array('gallery_id' => $gallery->id, 'order' => $order) );
+					$media->copyImage($image_id, array('gallery_id' => $gallery->id, 'order' => $order));
 				}
 
 				$gallery->save();
@@ -356,6 +347,7 @@ class flgalleryAdmin extends flgalleryBaseClass
 
 			default:
 				$admpage->manageGalleries();
+				break;
 		}
 	}
 
@@ -366,16 +358,16 @@ class flgalleryAdmin extends flgalleryBaseClass
 
 		$request = array_merge($_GET, $_POST);
 
-		if ( isset($request['gallery_id']) && is_array($request['gallery_id']) )
+		if (isset($request['gallery_id']) && is_array($request['gallery_id']))
 			$request['gallery_id'] = $request['gallery_id'][0];
 
-		switch ($request['ajax_action'])
-		{
+		switch ($request['ajax_action']) {
 			case 'getGalleryItemsHtml':
-				if ( !empty($request['gallery_id']) )
-					$gallery = new flgalleryGallery( (int)$request['gallery_id'] );
-				else
+				if (!empty($request['gallery_id'])) {
+					$gallery = new flgalleryGallery((int)$request['gallery_id']);
+				} else {
 					$gallery = null;
+				}
 
 				echo $admpage->getGalleryItemsHtml($gallery);
 				break;
@@ -430,25 +422,26 @@ class flgalleryAdmin extends flgalleryBaseClass
 		include FLGALLERY_GLOBALS;
 
 		$action = empty($_REQUEST['action']) ? NULL : $_REQUEST['action'];
-		switch ($action)
-		{
+		switch ($action) {
 			case 'uninstallPlugin':
-				if ( $plugin->uninstall() )
+				if ($plugin->uninstall()) {
 					return true;
+				}
 			default:
 				$admpage->head($plugin->title, 'about');
 				$admpage->about();
+				break;
 		}
 		$admpage->foot();
 	}
 
 	function createGallery($data = NULL)
 	{
-		if ( !empty($data) )
-		{
+		if (!empty($data)) {
 			$gallery = new flgalleryGallery($data);
-			if ( $id = $gallery->save() )
+			if ($id = $gallery->save()) {
 				return $id;
+			}
 		}
 		return false;
 	}
@@ -457,11 +450,10 @@ class flgalleryAdmin extends flgalleryBaseClass
 	{
 		include FLGALLERY_GLOBALS;
 
-		$ext = $func->fileExtByMime( $func->fileMime($_FILES['image']['name']) );
-		$path = basename( $func->uniqueFile($plugin->imgDir."/%s{$ext}") );
+		$ext = $func->fileExtByMime($func->fileMime($_FILES['image']['name']));
+		$path = basename($func->uniqueFile($plugin->imgDir . "/%s{$ext}"));
 
-		if ( $func->upload( 'image', $plugin->imgDir, $path ) )
-		{
+		if ($func->upload('image', $plugin->imgDir, $path)) {
 			$gallery_id = (int)$_REQUEST['gallery_id'];
 			$album_id = (int)$_REQUEST['album_id'];
 
@@ -470,11 +462,9 @@ class flgalleryAdmin extends flgalleryBaseClass
 			$order = $wpdb->get_var("
 				SELECT {$max}(`order`)
 				FROM `{$plugin->dbImages}`
-				WHERE
-					`gallery_id` = '{$gallery_id}'
+				WHERE `gallery_id` = '{$gallery_id}'
 			");
-			if ( $order === false )
-			{
+			if ($order === false) {
 				$order = 0;
 				$this->warning($wpdb->last_error);
 				$this->debug($wpdb->last_query, array('Warning', $this->warningN));
@@ -485,37 +475,32 @@ class flgalleryAdmin extends flgalleryBaseClass
 			$insert = $wpdb->insert(
 				$plugin->dbImages,
 				array(
-					'album_id' =>	$album_id,
-					'gallery_id' =>	$gallery_id,
-					'order' =>		$order,
-					'type' =>		$func->fileMime($path),
-					'path' =>		$path,
-					'name' =>		$_FILES['image']['name'],
-					'title' =>		'',
-					'description'=>	'',
-					'link' =>		'',
-					'target' =>		'',
-					'width' =>		0,
-					'height' =>		0,
-					'size' =>		$_FILES['image']['size']
+					'album_id' => $album_id,
+					'gallery_id' => $gallery_id,
+					'order' => $order,
+					'type' => $func->fileMime($path),
+					'path' => $path,
+					'name' => $_FILES['image']['name'],
+					'title' => '',
+					'description' => '',
+					'link' => '',
+					'target' => '',
+					'width' => 0,
+					'height' => 0,
+					'size' => $_FILES['image']['size']
 				)
 
 			);
-			if ( $insert !== false )
-			{
+			if ($insert !== false) {
 				$gallery = new flgalleryGallery($gallery_id);
 				$gallery->save();
 				return $wpdb->insert_id;
-			}
-			else
-			{
+			} else {
 				$this->error($wpdb->last_error);
 				$this->debug($wpdb->last_query, array('Error', $this->errorN));
 				return false;
 			}
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -524,34 +509,35 @@ class flgalleryAdmin extends flgalleryBaseClass
 	{
 		include FLGALLERY_GLOBALS;
 
+		$image_id = (int)$image_id;
+
 		$image = $wpdb->get_row("
 			SELECT `type`, `name`, `path`
 			FROM `{$plugin->dbImages}`
 			WHERE `id` = '{$image_id}'
 		");
-		if ($image !== false)
-		{
+		if ($image !== false) {
 			header("Content-Type: {$image->type}");
 			header("Content-Disposition: attachment; filename=\"{$image->name}\"");
 
-			readfile($plugin->imgDir.'/'.$image->path);
-		}
-		else
+			readfile($plugin->imgDir . '/' . $image->path);
+		} else {
 			return false;
+		}
 	}
 
 	function sortImages($a)
 	{
 		$order = explode('&', $a['images_order']);
 
-		$gallery_id = &$a['gallery_id'];
-		$album_id = &$a['album_id'];
+		$gallery_id =& $a['gallery_id'];
+		$album_id =& $a['album_id'];
 
-		if ( !empty($gallery_id) )
-		{
+		if (!empty($gallery_id)) {
 			$gallery = new flgalleryGallery($gallery_id);
-			if ( $gallery->arrange($order) )
+			if ($gallery->arrange($order)) {
 				$gallery->save();
+			}
 		}
 	}
 
@@ -559,80 +545,86 @@ class flgalleryAdmin extends flgalleryBaseClass
 	{
 		include FLGALLERY_GLOBALS;
 
+		$image_id = (int)$image_id;
+
 		$image = $wpdb->get_row("
 			SELECT *
 			FROM `{$plugin->dbImages}`
 			WHERE `id` = '{$image_id}'
 		");
-		if ($image)
-		{
+		if ($image) {
 			$res = $wpdb->query("
 				DELETE FROM `{$plugin->dbImages}`
 				WHERE `id` = '{$image_id}'
 			");
-			if ($res !== false)
-			{
-				$copies = $wpdb->get_results("
+			if ($res !== false) {
+				$copies = $wpdb->get_results($wpdb->prepare("
 					SELECT *
 					FROM `{$plugin->dbImages}`
-					WHERE `path` = '{$image->path}'
-				");
-				if ( $copies !== false && count($copies) == 0 )
-				{
+					WHERE `path` = %s
+				", $image->path));
+
+				if ($copies !== false && count($copies) == 0) {
 					preg_match('/(.*)(\..*)/', $image->path, $fname);
 
 					if (strpos($image->path, '/') === 0) {
 						$fname[1] = md5($fname[1]);
 					} else {
 						// Delete image
-						unlink($plugin->imgDir.'/'.$image->path);
+						unlink($plugin->imgDir . '/' . $image->path);
 					}
 
 					// Delete thumbnails
-					$func->recurse($plugin->tmpDir, '#^img-'.preg_quote($fname[1]).'\..+#i', 'unlink');
+					$func->recurse($plugin->tmpDir, '#^img-' . preg_quote($fname[1]) . '\..+#i', 'unlink');
 				}
 
-				if ($gallery)
+				if ($gallery) {
 					$gallery->save();
-			}
-			else
+				}
+			} else {
 				return false;
-		}
-		else
+			}
+		} else {
 			return false;
+		}
 
 		return $image->id;
 	}
 
 	function printMessages($a, $class)
 	{
-		if ( !empty($a) )
-		{
-			foreach ($a as $sender => $events)
-			{
+		if (!empty($a)) {
+			foreach ($a as $sender => $events) {
 				print
-					"<div class='flgallery-{$class}'>".
-						"<h4><em>{$sender}</em> <strong>{$class}</strong>:</h4>\n";
+					"<div class='flgallery-{$class}'>" .
+					"<h4><em>{$sender}</em> <strong>{$class}</strong>:</h4>\n";
 
-				foreach ($events as $e)
+				foreach ($events as $e) {
 					echo "\n<div>{$e}</div>";
+				}
 
 				print "</div>\n";
 			}
 		}
 	}
-	function printErrors() {
+
+	function printErrors()
+	{
 		global $flgalleryErrors;
 		$this->printMessages($flgalleryErrors, 'errors');
 	}
-	function printWarnings() {
+
+	function printWarnings()
+	{
 		global $flgalleryWarnings;
 		$this->printMessages($flgalleryWarnings, 'warnings');
 	}
-	function printDebug() {
+
+	function printDebug()
+	{
 		global $flgalleryDebug;
 		$this->printMessages($flgalleryDebug, 'debug');
 	}
 }
 
-} ?>
+}
