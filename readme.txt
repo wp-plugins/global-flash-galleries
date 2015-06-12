@@ -75,7 +75,7 @@ This Global Flash Galleries plugin is simple to install and can be done in a mat
 
 1. Unpack the *.zip file and extract the /global-flash-galleries/ folder.
 2. Using an FTP program, upload the /global-flash-galleries/ folder to your WordPress plugins directory (Example: /wp-content/plugins/).
-3. Open your WordPress Admin panel and go to the 'Plugins' page. Locate the 'FlippingBook gallery' plugin and click on the 'Activate' link.
+3. Open your WordPress Admin panel and go to the 'Plugins' page. Locate the 'Global Flash Gallery' plugin and click on the 'Activate' link.
 4. If you need help, review the http://flash-gallery.com/support/
 
 == Frequently Asked Questions ==
